@@ -1,8 +1,80 @@
 package com.egfavre;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
 
-    public static void main(String[] args) {
-	// write your code here
+    public static void main(String[] args) throws FileNotFoundException {
+	//always start with the data
+        //posts = data
+        //will need to be stored in an object> create class becuase there are well defined fields
+        //create txt file for posts
+        //need a place to store post objects together- ArrayList
+        //create File
+        //create fileScanner
+        //while has Next Line
+        //sout to test
+
+        ArrayList<Post> posts = new ArrayList<>();
+
+        //parse file
+        File f = new File("posts.txt");
+        Scanner fileScanner = new Scanner (f);
+        while (fileScanner.hasNextLine()) {
+            //System.out.println(fileScanner.nextLine());
+            //Should print out file line by line
+            String line = fileScanner.nextLine();
+            //manual Parsing- could be done by Json- but this about getting the logic
+            String[] columns = line.split("\\|");
+            //will not affect actual String object- Strings are immutable- Strings cannot be changed- so need to store to new String
+            //need a break point- cannot put on empty line so put something that won't change anything
+            System.out.println();
+            //check columns in debug- results are individual characters
+            //pipe character is special regular expression character so it isn't literal- escape with \\
+
+            //create new post object so they can be grabbed individually
+            Post post = new Post(Integer.valueOf(columns[0]), columns[1], columns[2]);
+            posts.add(post);
+        }
+        //check that posts is created correctly
+        //System.out.println(posts);
+
+        //list out all top level posts only- reply index = -1
+        //eventually user will be able to type in number of post so that user can pick that number to see replies to only that post
+        //need to loop this and need new scanner for console
+
+        Scanner consoleScanner = new Scanner(System.in);
+        int currentPost = -1;
+        while (true) {
+            //print replies to current post
+            int postId = 0;
+            for (Post post : posts){
+                if (post.replyId == currentPost){
+                    System.out.printf("[%s] %s by %s\n", postId, post.text, post.author);
+                    //at this point still doesn't display index # but can loop and get replies- added this loop after putting in sout type id...
+                }
+                postId ++;
+            }
+            //test
+            // System.out.printf("Current post: %s\n", currentPost);
+            //ask for new id
+            System.out.println("type id number of the post to which you want to see replies");
+            currentPost = Integer.valueOf(consoleScanner.nextLine());
+
+            //test loop of changing the number before you assign methods to the number
+            //then go back and tell show replies to current post before first current post souf to start loop
+
+
+
+
+
+
+
+
+            ;
+        }
     }
 }
